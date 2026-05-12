@@ -1,196 +1,201 @@
 # Translations template for ckanext-feedback.
-# Copyright (C) 2024 CKAN
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the ckanext-feedback
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-feedback 0.1.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-04-10 07:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.15.0\n"
 
-#: ckanext/feedback/views.py
-msgid "Dataset not found"
-msgstr ""
-
-#: ckanext/feedback/views.py
-msgid "Please fill in all required fields."
-msgstr ""
-
-#: ckanext/feedback/views.py
-msgid "reCAPTCHA verification failed. Please try again."
-msgstr ""
-
-#: ckanext/feedback/views.py
-msgid "Thank you for your feedback!"
-msgstr ""
-
-#: ckanext/feedback/views.py
-msgid "Dataset feedback: {title}"
-msgstr ""
-
-#: ckanext/feedback/admin.py
+#: ckanext/feedback/admin.py:30
 msgid "Need to be system administrator to administer"
 msgstr ""
 
-#: ckanext/feedback/admin.py
+#: ckanext/feedback/admin.py:65
 msgid "Feedback submission deleted."
 msgstr ""
 
-#: ckanext/feedback/templates/admin/base.html
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/views.py:76
+msgid "Dataset not found"
+msgstr ""
+
+#: ckanext/feedback/views.py:90
+msgid "Please choose what describes you."
+msgstr ""
+
+#: ckanext/feedback/views.py:95
+msgid "Please choose a reason for your feedback."
+msgstr ""
+
+#: ckanext/feedback/views.py:100
+msgid "Please enter your feedback."
+msgstr ""
+
+#: ckanext/feedback/views.py:128
+msgid "reCAPTCHA verification failed. Please try again."
+msgstr ""
+
+#: ckanext/feedback/views.py:158
+msgid "Thank you for your feedback!"
+msgstr ""
+
+#: ckanext/feedback/views.py:173
+msgid "User sent feedback for {title}"
+msgstr ""
+
+#: ckanext/feedback/templates/admin/base.html:5
+#: ckanext/feedback/templates/admin/feedback.html:3
+#: ckanext/feedback/templates/admin/feedback.html:6
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:64
 msgid "Feedback"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:7
+msgid ""
+"This page shows feedback submitted by visitors on dataset pages. Submissions "
+"are only visible here and are never displayed publicly."
+msgstr ""
+
+#: ckanext/feedback/templates/admin/feedback.html:8
+msgid ""
+"Use the filter button next to a dataset to view feedback for a specific "
+"dataset. Click the trash icon to permanently delete a submission."
+msgstr ""
+
+#: ckanext/feedback/templates/admin/feedback.html:12
 msgid "Feedback Submissions"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:14
 msgid "Total submissions:"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:18
 msgid "Filtered by dataset:"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:20
 msgid "Clear filter"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:29
 msgid "Dataset"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:30
 msgid "Author"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:31
 msgid "Type"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:32
 msgid "Reason"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:33
 msgid "Date"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:45
+msgid "Filter by this dataset"
+msgstr ""
+
+#: ckanext/feedback/templates/admin/feedback.html:50
 msgid "Anonymous"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
-msgid "Show full text"
-msgstr ""
-
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:62
 msgid "Are you sure you want to delete this submission?"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:64
 msgid "Delete"
 msgstr ""
 
-#: ckanext/feedback/templates/admin/feedback.html
+#: ckanext/feedback/templates/admin/feedback.html:81
 msgid "No feedback submissions yet."
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/rating_widget.html
-msgid "Have your say"
-msgstr ""
-
-#: ckanext/feedback/templates/feedback/snippets/rating_widget.html
-msgid "votes"
-msgstr ""
-
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:10
 msgid "Provide feedback on this dataset"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:20
+msgid "Please correct the following:"
+msgstr ""
+
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:30
 msgid "Name"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:30
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:37
 msgid "optional"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:33
 msgid "Your name"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:37
 msgid "Email"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:40
 msgid "Your email address"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:44
 msgid "I am a"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:46
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:56
 msgid "-- Select --"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:54
 msgid "Reason for feedback"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:66
 msgid "Please describe your feedback..."
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
+#: ckanext/feedback/templates/feedback/snippets/feedback_form.html:76
 msgid "Submit Feedback"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Citizen"
+#: ckanext/feedback/templates/feedback/snippets/rating_widget.html:9
+msgid "Have your say"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Researcher"
+#: ckanext/feedback/templates/feedback/snippets/rating_widget.html:14
+msgid "Rate this dataset from 1 to 5 stars"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Developer"
+#: ckanext/feedback/templates/feedback/snippets/rating_widget.html:28
+msgid "Rate {n} out of 5"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Government Employee"
+#: ckanext/feedback/templates/feedback/snippets/rating_widget.html:29
+msgid "{n} out of 5"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Other"
+#: ckanext/feedback/templates/feedback/snippets/rating_widget.html:35
+msgid "votes"
 msgstr ""
 
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Data Quality"
-msgstr ""
-
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Missing Data"
-msgstr ""
-
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Broken Link"
-msgstr ""
-
-#: ckanext/feedback/templates/feedback/snippets/feedback_form.html
-msgid "Suggestion"
-msgstr ""

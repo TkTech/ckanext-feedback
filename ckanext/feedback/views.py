@@ -4,7 +4,7 @@ import hashlib
 import logging
 
 import requests as http_requests
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, session
 
 import ckan.lib.helpers as h
 import ckan.plugins.toolkit as tk
@@ -29,6 +29,17 @@ def _ip_hash() -> str:
         else tk.request.remote_addr
     )
     return hashlib.sha256(ip.encode()).hexdigest()
+
+
+def _stash_form_state(errors: list[dict], form_data: dict) -> None:
+    """Stash structured validation errors and the submitted form values
+    so the form template can render them inline after the redirect.
+
+    Both keys are popped (not read) by their respective template helpers,
+    so the data only survives one render — same lifecycle as a flash message.
+    """
+    session["_feedback_form_errors"] = errors
+    session["_feedback_form_data"] = form_data
 
 
 @feedback_blueprint.route("/rate", methods=["POST"])
@@ -64,53 +75,85 @@ def submit(package_id: str):
     except tk.ObjectNotFound:
         tk.abort(404, _("Dataset not found"))
 
-    subject_type = tk.request.form.get("subject_type", "").strip()
-    reason = tk.request.form.get("reason", "").strip()
-    body = tk.request.form.get("body", "").strip()
+    form_data = {
+        "author_name": tk.request.form.get("author_name", "").strip(),
+        "author_email": tk.request.form.get("author_email", "").strip(),
+        "subject_type": tk.request.form.get("subject_type", "").strip(),
+        "reason": tk.request.form.get("reason", "").strip(),
+        "body": tk.request.form.get("body", "").strip(),
+    }
 
-    if not subject_type or not reason or not body:
-        h.flash_error(_("Please fill in all required fields."))
+    errors: list[dict] = []
+    if not form_data["subject_type"]:
+        errors.append({
+            "field": "feedback-subject-type",
+            "message": _("Please choose what describes you."),
+        })
+    if not form_data["reason"]:
+        errors.append({
+            "field": "feedback-reason",
+            "message": _("Please choose a reason for your feedback."),
+        })
+    if not form_data["body"]:
+        errors.append({
+            "field": "feedback-body",
+            "message": _("Please enter your feedback."),
+        })
+
+    if errors:
+        _stash_form_state(errors, form_data)
         return h.redirect_to("dataset.read", id=package_id)
 
     # reCAPTCHA verification.
     secret = config.recaptcha_secret_key()
     if secret:
         recaptcha_response = tk.request.form.get("g-recaptcha-response", "")
+        recaptcha_failed = False
         try:
             resp = http_requests.post(
                 "https://www.google.com/recaptcha/api/siteverify",
-                data={
-                    "secret": secret,
-                    "response": recaptcha_response,
-                },
+                data={"secret": secret, "response": recaptcha_response},
                 timeout=10,
             )
             if not resp.json().get("success"):
-                h.flash_error(_("reCAPTCHA verification failed. Please try again."))
-                return h.redirect_to("dataset.read", id=package_id)
+                recaptcha_failed = True
         except http_requests.RequestException:
             log.exception("reCAPTCHA verification request failed")
-            h.flash_error(_("reCAPTCHA verification failed. Please try again."))
+            recaptcha_failed = True
+
+        if recaptcha_failed:
+            _stash_form_state(
+                [{
+                    "field": "feedback-recaptcha",
+                    "message": _("reCAPTCHA verification failed. Please try again."),
+                }],
+                form_data,
+            )
             return h.redirect_to("dataset.read", id=package_id)
 
     user_id = current_user.name if current_user.is_authenticated else None
-    author_name = tk.request.form.get("author_name", "").strip() or None
-    author_email = tk.request.form.get("author_email", "").strip() or None
 
     feedback_model.create_submission(
         package_id=package_id,
         user_id=user_id,
-        author_name=author_name,
-        author_email=author_email,
-        subject_type=subject_type,
-        reason=reason,
-        body=body,
+        author_name=form_data["author_name"] or None,
+        author_email=form_data["author_email"] or None,
+        subject_type=form_data["subject_type"],
+        reason=form_data["reason"],
+        body=form_data["body"],
     )
 
     # Email notification.
     recipients = config.email_recipients()
     if recipients:
-        _send_notification(pkg, subject_type, reason, body, author_name, author_email)
+        _send_notification(
+            pkg,
+            form_data["subject_type"],
+            form_data["reason"],
+            form_data["body"],
+            form_data["author_name"] or None,
+            form_data["author_email"] or None,
+        )
 
     h.flash_success(_("Thank you for your feedback!"))
     return h.redirect_to("dataset.read", id=package_id)
@@ -129,20 +172,16 @@ def _send_notification(
     dataset_title = pkg.get("title") or pkg.get("name")
     subject = _("User sent feedback for {title}").format(title=dataset_title)
     mail_body = (
-        f"Hello,\n\nYou got feeback from {author_name or 'Anonymous'} ({author_email or 'Not provided'}), {subject_type}\n\n"
-		f"Dataset: {dataset_title}\n"
-        f"Reason for feeback: {reason}\n\n"
+        f"Hello,\n\nYou got feedback from {author_name or 'Anonymous'} ({author_email or 'Not provided'}), {subject_type}\n\n"
+        f"Dataset: {dataset_title}\n"
+        f"Reason for feedback: {reason}\n\n"
         f"Feedback:\n{body}\n\n"
         f"URL: {h.url_for('dataset.read', id=pkg['name'], _external=True)}\n\n"
-		f"Have a good day\n"
-     )
+        f"Have a good day\n"
+    )
 
     for email in config.email_recipients():
         try:
-            print("DEBUG: ckanext-feedback (sending)")
-            print(email)
-            print(subject)
-            print(mail_body)
             mail_recipient("Open Data and Information Portal", email, subject, mail_body)
         except Exception:
             log.exception("Failed to send feedback notification to %s", email)

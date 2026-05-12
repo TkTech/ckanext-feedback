@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 
+from flask import session
+
 import ckan.plugins.toolkit as tk
 from ckan.common import request
 
@@ -31,3 +33,19 @@ def feedback_subject_types() -> list[str]:
 
 def feedback_reasons() -> list[str]:
     return config.reasons()
+
+
+def feedback_form_errors() -> list[dict]:
+    """Return structured validation errors stashed by the submit view, then
+    clear them. Each entry is `{"field": <input id>, "message": <text>}`.
+
+    Pop semantics — same lifecycle as a flash message — so the errors only
+    appear on the render that immediately follows the failed submit.
+    """
+    return session.pop("_feedback_form_errors", []) or []
+
+
+def feedback_form_data() -> dict:
+    """Return the form values from the failed submit so the template can
+    repopulate the fields. Cleared on read."""
+    return session.pop("_feedback_form_data", {}) or {}

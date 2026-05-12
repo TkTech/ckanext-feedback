@@ -4,7 +4,7 @@ setup(
     message_extractors={
         "ckanext": [
             ("**.py", "python", None),
-            ("**.html", "jinja2", None),
+            ("**/templates/**.html", "ckan", None),
         ],
     },
 )

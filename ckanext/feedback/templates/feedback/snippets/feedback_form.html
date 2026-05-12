@@ -2,6 +2,10 @@
 {% set subject_types = h.feedback_subject_types() %}
 {% set reasons = h.feedback_reasons() %}
 
+{# Both helpers pop from session, so call once and reuse the local var. #}
+{% set form_errors = h.feedback_form_errors() %}
+{% set form_data = h.feedback_form_data() %}
+
 <div class="feedback-form-section" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
   <h3><i class="fa fa-comment"></i> {{ _('Provide feedback on this dataset') }}</h3>
 
@@ -11,15 +15,28 @@
         {% if recaptcha_key %}data-recaptcha-sitekey="{{ recaptcha_key }}"{% endif %}>
     {{ h.csrf_input() }}
 
+    {% if form_errors %}
+      <div class="alert alert-danger feedback-form-errors" role="alert" tabindex="-1">
+        <h3>{{ _('Please correct the following:') }}</h3>
+        <ol>
+          {% for error in form_errors %}
+            <li><a href="#{{ error.field }}">{{ error.message }}</a></li>
+          {% endfor %}
+        </ol>
+      </div>
+    {% endif %}
+
     <div class="form-group">
       <label for="feedback-name">{{ _('Name') }} <small class="text-muted">({{ _('optional') }})</small></label>
       <input type="text" class="form-control" id="feedback-name" name="author_name"
+             value="{{ form_data.get('author_name', '') }}"
              placeholder="{{ _('Your name') }}">
     </div>
 
     <div class="form-group">
       <label for="feedback-email">{{ _('Email') }} <small class="text-muted">({{ _('optional') }})</small></label>
       <input type="email" class="form-control" id="feedback-email" name="author_email"
+             value="{{ form_data.get('author_email', '') }}"
              placeholder="{{ _('Your email address') }}">
     </div>
 
@@ -28,7 +45,7 @@
       <select class="form-control" id="feedback-subject-type" name="subject_type" required>
         <option value="">{{ _('-- Select --') }}</option>
         {% for st in subject_types %}
-          <option value="{{ st }}">{{ _(st) }}</option>
+          <option value="{{ st }}" {% if form_data.get('subject_type') == st %}selected{% endif %}>{{ _(st) }}</option>
         {% endfor %}
       </select>
     </div>
@@ -38,7 +55,7 @@
       <select class="form-control" id="feedback-reason" name="reason" required>
         <option value="">{{ _('-- Select --') }}</option>
         {% for r in reasons %}
-          <option value="{{ r }}">{{ _(r) }}</option>
+          <option value="{{ r }}" {% if form_data.get('reason') == r %}selected{% endif %}>{{ _(r) }}</option>
         {% endfor %}
       </select>
     </div>
@@ -46,7 +63,7 @@
     <div class="form-group">
       <label for="feedback-body">{{ _('Feedback') }} <span class="text-danger">*</span></label>
       <textarea class="form-control" id="feedback-body" name="body" rows="5" required
-                placeholder="{{ _('Please describe your feedback...') }}"></textarea>
+                placeholder="{{ _('Please describe your feedback...') }}">{{ form_data.get('body', '') }}</textarea>
     </div>
 
     {% if recaptcha_key %}
@@ -60,3 +77,6 @@
     </button>
   </form>
 </div>
+
+{% asset "ckanext_feedback/feedback_css" %}
+{% asset "ckanext_feedback/feedback_js" %}

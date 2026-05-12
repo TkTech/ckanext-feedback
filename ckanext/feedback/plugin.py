@@ -30,4 +30,6 @@ class FeedbackPlugin(plugins.SingletonPlugin, DefaultTranslation):
             "feedback_recaptcha_site_key": helpers.feedback_recaptcha_site_key,
             "feedback_subject_types": helpers.feedback_subject_types,
             "feedback_reasons": helpers.feedback_reasons,
+            "feedback_form_errors": helpers.feedback_form_errors,
+            "feedback_form_data": helpers.feedback_form_data,
         }
